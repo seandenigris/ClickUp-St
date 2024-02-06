@@ -8,6 +8,10 @@ Class {
 BaselineOfClickUp >> baseline: spec [
 	<baseline>
 		^ spec for: #common do: [
-			spec package: 'ClickUp'
-		]
+			spec baseline: 'PharoEnhancements' with: [
+				spec repository: 'github://seandenigris/Pharo-Enhancements' ].
+				
+			spec 
+				package: 'ClickUp'
+				with: [ spec requires: #('PharoEnhancements') ] ]
 ]
