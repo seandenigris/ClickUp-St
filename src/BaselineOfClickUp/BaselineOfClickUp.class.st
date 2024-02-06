@@ -1,11 +1,11 @@
 Class {
-	#name : #BaselineOfClickUpSt,
+	#name : #BaselineOfClickUp,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfClickUpSt
+	#category : #BaselineOfClickUp
 }
 
 { #category : #baseline }
-BaselineOfClickUpSt >> baseline: spec [
+BaselineOfClickUp >> baseline: spec [
 	<baseline>
 		^ spec for: #common do: [
 			spec package: 'ClickUp'
