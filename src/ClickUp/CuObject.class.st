@@ -1,58 +1,54 @@
 Class {
 	#name : #CuObject,
 	#superclass : #Object,
+	#traits : 'PeTRawDataHolder',
+	#classTraits : 'PeTRawDataHolder classTrait',
 	#instVars : [
-		'rawData'
-	],
-	#classVars : [
-		'ApiToken',
-		'Client'
+		'application'
 	],
 	#category : #ClickUp
 }
 
 { #category : #accessing }
-CuObject class >> apiToken [
-	^ ApiToken
-]
-
-{ #category : #accessing }
-CuObject class >> apiToken: anObject [
-	ApiToken := anObject
-]
-
-{ #category : #accessing }
-CuObject class >> client [
-	^ Client ifNil: [ Client := ZnClient new ]
-]
-
-{ #category : #accessing }
-CuObject class >> client: anObject [
-	Client := anObject
-]
-
-{ #category : #'as yet unclassified' }
-CuObject class >> fromDictionary: aDictionary [
+CuObject class >> fromDictionary: aDictionary forApplication: anApplication [
 
 	^ self new
 		rawData: aDictionary;
+		application: anApplication;
 		yourself
 ]
 
 { #category : #accessing }
-CuObject class >> get: aUrl [
-	
-	self client url: aUrl.
-	self client request setAuthorization: self apiToken.
-	^ self client get.
+CuObject >> application [
+	^ application
 ]
 
 { #category : #accessing }
-CuObject >> rawData [
-	^ rawData
+CuObject >> application: anObject [
+	application := anObject
 ]
 
 { #category : #accessing }
-CuObject >> rawData: anObject [
-	rawData := anObject
+CuObject >> displayStringOn: aStream [
+
+	aStream
+		nextPutAll: self name
+]
+
+{ #category : #accessing }
+CuObject >> id [
+
+	^ self rawDataAt: 'id'
+]
+
+{ #category : #accessing }
+CuObject >> name [
+
+	^ self rawDataAt: 'name'
+]
+
+{ #category : #accessing }
+CuObject >> printOn: aStream [
+
+	self printFromDisplayStringOn: aStream
 ]
