@@ -12,6 +12,17 @@ Class {
 	#category : #ClickUp
 }
 
+{ #category : #'CuObject - accessing' }
+CuSpace >> allTasks [
+	
+	^ OrderedCollection streamContents: [ :str |
+		self folders do: [ :folder |
+			str nextPutAll: folder allTasks ].
+			
+		self lists do: [ :list |
+			str nextPutAll: list tasks ] ]
+]
+
 { #category : #accessing }
 CuSpace >> folders [
 
@@ -21,7 +32,21 @@ CuSpace >> folders [
 		getJsonAt: 'https://api.clickup.com/api/v2/space' asUrl / self id / 'folder'
 		do: [ :json |
 			folders := (json at: 'folders') collect: [ :dict |
-				CuFolder fromDictionary: dict forApplication: self application ] ]
+				CuFolder 
+					fromDictionary: dict 
+					withParent: self
+					inApplication: self application ] ]
+]
+
+{ #category : #accessing }
+CuSpace >> foldersGtSearchFor: aSearch [
+	<gtSearch>
+	^ aSearch list
+		title: 'Folders';
+		priority: 300;
+		items: [ self folders ];
+		itemName: #displayString;
+		matchSubstrings
 ]
 
 { #category : #accessing }
@@ -30,6 +55,7 @@ CuSpace >> foldersGtViewFor: aView [
 	
 	^ aView list
 		title: 'Folders';
+		priority: 50;
 		items: [ self folders ];
 		itemText: #displayString;
 		yourself
@@ -44,7 +70,21 @@ CuSpace >> lists [
 		getJsonAt: 'https://api.clickup.com/api/v2/space' asUrl / self id / 'list'
 		do: [ :json |
 			lists := (json at: 'lists') collect: [ :dict |
-				CuList fromDictionary: dict forApplication: self application ] ]
+				CuList 
+					fromDictionary: dict 
+					withParent: self
+					inApplication: self application ] ]
+]
+
+{ #category : #accessing }
+CuSpace >> listsGtSearchFor: aSearch [
+	<gtSearch>
+	^ aSearch list
+		title: 'Lists';
+		priority: 200;
+		items: [ self lists ];
+		itemName: #displayString;
+		matchSubstrings
 ]
 
 { #category : #accessing }
@@ -53,7 +93,14 @@ CuSpace >> listsGtViewFor: aView [
 	
 	^ aView list
 		title: 'Lists';
+		priority: 25;
 		items: [ self lists ];
 		itemText: #displayString;
 		yourself
+]
+
+{ #category : #'CuObject - accessing' }
+CuSpace >> url [
+
+	^ self workspace url / 'v' / 's' / self id
 ]

@@ -1,3 +1,8 @@
+"
+# API Documentation
+- [Getting started](https://help.clickup.com/hc/en-us/articles/6303426241687-Getting-Started-with-the-ClickUp-API#api-docs)
+- [API Docs](https://clickup.com/api/)
+"
 Class {
 	#name : #CuClickUpApplication,
 	#superclass : #Object,
@@ -13,6 +18,14 @@ Class {
 }
 
 { #category : #accessing }
+CuClickUpApplication class >> configureFromSTONFile: aFileReference [
+
+	| dict |
+	dict := STON fromStringWithComments: aFileReference contents.
+	self uniqueInstance apiToken: (dict at: 'apiToken')
+]
+
+{ #category : #accessing }
 CuClickUpApplication class >> uniqueInstance [
 	^ uniqueInstance ifNil: [ uniqueInstance := self new ]
 ]
@@ -20,6 +33,12 @@ CuClickUpApplication class >> uniqueInstance [
 { #category : #accessing }
 CuClickUpApplication class >> uniqueInstance: anObject [
 	uniqueInstance := anObject
+]
+
+{ #category : #accessing }
+CuClickUpApplication >> allTasks [
+	
+	^ self workspaces flatCollect: [ :ws | ws allTasks ]
 ]
 
 { #category : #accessing }
@@ -40,6 +59,16 @@ CuClickUpApplication >> client [
 { #category : #accessing }
 CuClickUpApplication >> client: anObject [
 	client := anObject
+]
+
+{ #category : #accessing }
+CuClickUpApplication >> clientDownload: aUrl to: aFileReference [
+		
+	self client
+		url: aUrl;
+		contentReader: nil;
+		downloadTo: aFileReference;
+		streaming: false
 ]
 
 { #category : #accessing }
@@ -107,6 +136,15 @@ CuClickUpApplication >> reset [
 	self client: nil
 ]
 
+{ #category : #'as yet unclassified' }
+CuClickUpApplication >> spaceWithId: aString [ 
+	
+	^ self workspaces do: [ :ws |
+		ws spaces
+			detect: [ :s | s id = aString ]
+			ifFound: [ :s | ^ s ] ]
+]
+
 { #category : #accessing }
 CuClickUpApplication >> workspaces [
 
@@ -118,7 +156,8 @@ CuClickUpApplication >> workspaces [
 			^ workspaces := (json at: 'teams') collect: [ :dict |
 				CuWorkspace 
 					fromDictionary: dict
-					forApplication: self ] ]
+					withParent: nil
+					inApplication: self ] ]
 ]
 
 { #category : #accessing }

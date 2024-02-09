@@ -4,16 +4,18 @@ Class {
 	#traits : 'PeTRawDataHolder',
 	#classTraits : 'PeTRawDataHolder classTrait',
 	#instVars : [
-		'application'
+		'application',
+		'parent'
 	],
 	#category : #ClickUp
 }
 
 { #category : #accessing }
-CuObject class >> fromDictionary: aDictionary forApplication: anApplication [
+CuObject class >> fromDictionary: aDictionary withParent: aCuObject inApplication: anApplication [
 
 	^ self new
 		rawData: aDictionary;
+		parent: aCuObject;
 		application: anApplication;
 		yourself
 ]
@@ -48,7 +50,40 @@ CuObject >> name [
 ]
 
 { #category : #accessing }
+CuObject >> parent [
+	^ parent
+]
+
+{ #category : #accessing }
+CuObject >> parent: anObject [
+	parent := anObject
+]
+
+{ #category : #accessing }
 CuObject >> printOn: aStream [
 
 	self printFromDisplayStringOn: aStream
+]
+
+{ #category : #accessing }
+CuObject >> tasksGtSearchFor: aSearch [
+	<gtSearch>
+	^ aSearch list
+		title: 'Tasks (all)';
+		priority: 2;
+		items: [ self allTasks ];
+		itemName: #displayString;
+		matchSubstrings
+]
+
+{ #category : #accessing }
+CuObject >> url [
+
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+CuObject >> workspace [
+
+	^ self parent workspace
 ]

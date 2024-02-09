@@ -1,6 +1,14 @@
 Extension { #name : #PpValue }
 
 { #category : #'*ClickUp' }
+PpValue >> clickUpTask [
+
+	self clickUpTaskId ifNil: [ ^ nil ].
+
+	^ CuClickUpApplication uniqueInstance taskWithId: self clickUpTaskId
+]
+
+{ #category : #'*ClickUp' }
 PpValue >> clickUpTaskId [
 	^ self maLazyPropertyUsing: self clickUpTaskIdDescription
 ]
@@ -29,5 +37,5 @@ PpValue >> clickUpTaskUrl [
 
 	self clickUpTaskId ifNil: [ ^ nil ].
 
-	^ 'https://app.clickup.com/t' asUrl / self clickUpTaskId
+	^ CuTask urlForId: self clickUpTaskId
 ]
