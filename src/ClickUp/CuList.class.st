@@ -50,8 +50,9 @@ CuList >> tasks [
 
 	tasks ifNotNil: [ ^ tasks ].
 	
+	"API Reference: https://clickup.com/api/clickupreference/operation/GetTasks/"
 	^ self application
-		getJsonAt: 'https://api.clickup.com/api/v2/list' asUrl / self id / 'task'
+		getJsonAt: 'https://api.clickup.com/api/v2/list' asUrl / self id / 'task' ? ('subtasks' -> true)
 		do: [ :json |
 			tasks := (json at: 'tasks') collect: [ :dict |
 				CuTask
