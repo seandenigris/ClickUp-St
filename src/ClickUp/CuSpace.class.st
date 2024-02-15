@@ -64,16 +64,7 @@ CuSpace >> foldersGtViewFor: aView [
 { #category : #accessing }
 CuSpace >> lists [
 
-	lists ifNotNil: [ ^ lists ].
-	
-	^ self application
-		getJsonAt: 'https://api.clickup.com/api/v2/space' asUrl / self id / 'list'
-		do: [ :json |
-			lists := (json at: 'lists') collect: [ :dict |
-				CuList 
-					fromDictionary: dict 
-					withParent: self
-					inApplication: self application ] ]
+	^ lists ifNil: [ lists := self application getListsFor: self ].
 ]
 
 { #category : #accessing }
