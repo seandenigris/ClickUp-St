@@ -24,12 +24,25 @@ CuList >> getSpace [
 ]
 
 { #category : #accessing }
+CuList >> parent [
+
+	^ parent ifNil: [ self parent: self getSpace. parent ]
+]
+
+{ #category : #accessing }
+CuList >> reload [
+
+	self application 
+		getListWithId: self id
+		jsonDo: [ :json | self rawData: json ].
+		
+	self tasks: nil
+]
+
+{ #category : #accessing }
 CuList >> space [
 
-	^ self
-		rawDataAt: 'space'
-		reader: [ :dict |
-			self application spaceWithId: (dict at: 'id' ) ]
+	^ self parent
 ]
 
 { #category : #accessing }
@@ -48,6 +61,11 @@ CuList >> tasks [
 ]
 
 { #category : #accessing }
+CuList >> tasks: anObject [
+	tasks := anObject
+]
+
+{ #category : #accessing }
 CuList >> tasksGtViewFor: aView [
 	<gtView>
 	
@@ -55,7 +73,7 @@ CuList >> tasksGtViewFor: aView [
 		title: 'Tasks';
 		items: [ self tasks ];
 		itemText: #displayString;
-		yourself
+		cuActionUpdateButtonReloading: self
 ]
 
 { #category : #accessing }

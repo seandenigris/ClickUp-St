@@ -24,6 +24,12 @@ CuSpace >> allTasks [
 ]
 
 { #category : #accessing }
+CuSpace >> baseApiUrl [
+
+	^ 'https://api.clickup.com/api/v2/space' asUrl
+]
+
+{ #category : #accessing }
 CuSpace >> folders [
 
 	folders ifNotNil: [ ^ folders ].
@@ -36,6 +42,11 @@ CuSpace >> folders [
 					fromDictionary: dict 
 					withParent: self
 					inApplication: self application ] ]
+]
+
+{ #category : #accessing }
+CuSpace >> folders: anObject [
+	folders := anObject
 ]
 
 { #category : #accessing }
@@ -58,13 +69,18 @@ CuSpace >> foldersGtViewFor: aView [
 		priority: 50;
 		items: [ self folders ];
 		itemText: #displayString;
-		yourself
+		cuActionUpdateButtonReloading: self
 ]
 
 { #category : #accessing }
 CuSpace >> lists [
 
 	^ lists ifNil: [ lists := self application getListsFor: self ].
+]
+
+{ #category : #accessing }
+CuSpace >> lists: anObject [
+	lists := anObject
 ]
 
 { #category : #accessing }
@@ -87,7 +103,7 @@ CuSpace >> listsGtViewFor: aView [
 		priority: 25;
 		items: [ self lists ];
 		itemText: #displayString;
-		yourself
+		cuActionUpdateButtonReloading: self
 ]
 
 { #category : #accessing }

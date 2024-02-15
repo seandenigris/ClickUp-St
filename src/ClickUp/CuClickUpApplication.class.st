@@ -187,6 +187,19 @@ CuClickUpApplication >> getTaskWithId: aString jsonDo: aBlock [
 ]
 
 { #category : #accessing }
+CuClickUpApplication >> reload [
+
+	self 
+		getJsonAt: 'https://api.clickup.com/api/v2/team' 
+		do: [ :json |
+			^ workspaces := (json at: 'teams') collect: [ :dict |
+				CuWorkspace 
+					fromDictionary: dict
+					withParent: nil
+					inApplication: self ] ]
+]
+
+{ #category : #accessing }
 CuClickUpApplication >> reset [
 
 	self workspaces: nil.
@@ -205,16 +218,7 @@ CuClickUpApplication >> spaceWithId: aString [
 { #category : #accessing }
 CuClickUpApplication >> workspaces [
 
-	workspaces ifNotNil: [ ^ workspaces ].
-	
-	self 
-		getJsonAt: 'https://api.clickup.com/api/v2/team' 
-		do: [ :json |
-			^ workspaces := (json at: 'teams') collect: [ :dict |
-				CuWorkspace 
-					fromDictionary: dict
-					withParent: nil
-					inApplication: self ] ]
+	^ workspaces ifNil: [ self reload. workspaces ].
 ]
 
 { #category : #accessing }
@@ -226,10 +230,9 @@ CuClickUpApplication >> workspaces: aCollection [
 { #category : #accessing }
 CuClickUpApplication >> workspacesGtViewFor: aView [
 	<gtView>
-	
 	^ aView list
 		title: 'Workspaces';
 		items: [ self workspaces ];
 		itemText: #displayString;
-		yourself
+		cuActionUpdateButtonReloading: self
 ]

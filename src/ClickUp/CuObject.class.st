@@ -66,6 +66,16 @@ CuObject >> printOn: aStream [
 ]
 
 { #category : #accessing }
+CuObject >> rawDataGtViewFor: aView context: aContext [
+	<gtView>
+	
+	^ self 
+		rawDataGtViewFor: aView 
+		context: aContext 
+		do: [ :resultView | resultView cuActionUpdateButtonReloading: self ]
+]
+
+{ #category : #accessing }
 CuObject >> tasksGtSearchFor: aSearch [
 	<gtSearch>
 	^ aSearch list
