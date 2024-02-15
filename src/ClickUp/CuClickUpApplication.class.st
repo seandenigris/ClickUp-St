@@ -121,11 +121,68 @@ CuClickUpApplication >> clientHTTP: aSelector url: aUrl contentReader: readerBlo
 ]
 
 { #category : #accessing }
+CuClickUpApplication >> getFolderWithId: aString jsonDo: aBlock [
+
+	"API Reference: https://clickup.com/api/clickupreference/operation/GetFolder/"
+	| url |
+	url := 'https://api.clickup.com/api/v2/folder' asUrl / aString.
+	^ self
+		getJsonAt: url
+		do: aBlock
+]
+
+{ #category : #accessing }
 CuClickUpApplication >> getJsonAt: aUrl do: aBlock [
 
 	^ self
 		clientHTTP: #get 
 		jsonAt: aUrl 
+		do: aBlock
+]
+
+{ #category : #accessing }
+CuClickUpApplication >> getListWithId: aString jsonDo: aBlock [
+
+	"API Reference: https://clickup.com/api/clickupreference/operation/GetList/"
+	| url |
+	url := 'https://api.clickup.com/api/v2/list' asUrl / aString.
+	^ self
+		getJsonAt: url
+		do: aBlock
+]
+
+{ #category : #accessing }
+CuClickUpApplication >> getListsFor: aCuObject [
+
+	^ self
+		getJsonAt: aCuObject baseApiUrl / aCuObject id / 'list'
+		do: [ :json |
+			(json at: 'lists') collect: [ :dict |
+				CuList 
+					fromDictionary: dict 
+					withParent: self
+					inApplication: self ] ]
+]
+
+{ #category : #accessing }
+CuClickUpApplication >> getSpaceWithId: aString jsonDo: aBlock [
+
+	"API Reference: https://clickup.com/api/clickupreference/operation/GetSpace/"
+	| url |
+	url := 'https://api.clickup.com/api/v2/space/' asUrl / aString.
+	^ self
+		getJsonAt: url
+		do: aBlock
+]
+
+{ #category : #accessing }
+CuClickUpApplication >> getTaskWithId: aString jsonDo: aBlock [
+
+	"Reference: https://clickup.com/api/clickupreference/operation/GetTask/"
+	| url |
+	url := 'https://api.clickup.com/api/v2/task' asUrl / aString ? ('include_subtasks' -> true).
+	^ self
+		getJsonAt: url
 		do: aBlock
 ]
 
