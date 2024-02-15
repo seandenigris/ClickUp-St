@@ -2,8 +2,8 @@ Class {
 	#name : #CuTask,
 	#superclass : #CuObject,
 	#instVars : [
-		'spaces',
-		'attachments'
+		'attachments',
+		'subtasks'
 	],
 	#category : #ClickUp
 }
@@ -44,14 +44,20 @@ CuTask >> attachments [
 ]
 
 { #category : #accessing }
+CuTask >> attachments: anObject [
+	attachments := anObject
+]
+
+{ #category : #accessing }
 CuTask >> attachmnentsGtViewFor: aView [
 	<gtView>
-	
 	^ aView list
 		title: 'Attachments';
+		priority: 60;
 		items: [ self attachments ];
 		itemText: #displayString;
-		yourself
+		inspectButtonFor: [ self attachments ];
+		cuActionUpdateButtonReloading: self
 ]
 
 { #category : #accessing }
@@ -80,15 +86,13 @@ CuTask >> customFields [
 { #category : #accessing }
 CuTask >> customFieldsGtViewFor: aView [
 	<gtView>
-	
 	^ aView columnedList
 		title: 'Custom Fields';
+		priority: 20;
 		items: [ self customFields ];
-		column: 'Name'
-			text: #name;
-		column: 'Value'
-			text: #fieldValue;
-		yourself
+		column: 'Name' text: #name;
+		column: 'Value' text: #fieldValue;
+		cuActionUpdateButtonReloading: self
 ]
 
 { #category : #accessing }
@@ -100,11 +104,64 @@ CuTask >> modificationTimestamp [
 ]
 
 { #category : #accessing }
+CuTask >> presentOnWeb [
+
+	^ self url open
+]
+
+{ #category : #accessing }
+CuTask >> presentOnWebDescription [
+	<magritteActionDescription>
+	^ MAActionDescription new
+		action: #presentOnWeb;
+		gtIcon: BrGlamorousVectorIcons link;
+		isLabelVisible: false;
+		yourself
+]
+
+{ #category : #accessing }
 CuTask >> reload [
-  
-	self application
-		getJsonAt: 'https://api.clickup.com/api/v2/task' asUrl / self id
-		do: [ :json | self rawData: json ]
+
+	self application 
+		getTaskWithId: self id
+		jsonDo: [ :json | self rawData: json ].
+		
+	self
+		attachments: nil;
+		subtasks: nil
+]
+
+{ #category : #accessing }
+CuTask >> subtasks [
+
+	subtasks ifNotNil: [ ^ subtasks ].
+	
+	^ self rawData 
+		at: 'subtasks'
+		ifPresent: [ :col |
+			subtasks := col collect: [ :dict |
+				"A subtask is actually a task, but only part of its data is included along with its parent"
+				CuSubtask 
+					fromId: (dict at: 'id')
+					withParent: self
+					inApplication: self application ] ]
+]
+
+{ #category : #accessing }
+CuTask >> subtasks: anObject [
+	subtasks := anObject
+]
+
+{ #category : #accessing }
+CuTask >> subtasksGtViewFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Subtasks';
+		priority: 40;
+		items: [ self subtasks ];
+		itemText: #displayString;
+		inspectButtonFor: [ self subtasks ];
+		cuActionUpdateButtonReloading: self
 ]
 
 { #category : #accessing }

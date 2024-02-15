@@ -41,8 +41,21 @@ CuAttachment >> name [
 ]
 
 { #category : #accessing }
+CuAttachment >> open [
+	self cached open
+]
+
+{ #category : #accessing }
+CuAttachment >> openDescription [
+	<magritteActionDescription>
+	^ MAActionDescription new
+		action: #open;
+		yourself
+]
+
+{ #category : #accessing }
 CuAttachment >> preview [
-	self download preview
+	self cached preview
 ]
 
 { #category : #accessing }

@@ -99,6 +99,18 @@ CuSpace >> listsGtViewFor: aView [
 		yourself
 ]
 
+{ #category : #accessing }
+CuSpace >> reload [
+  
+	self application 
+		getSpaceWithId: self id
+		jsonDo: [ :json | self rawData: json ].
+		
+	self
+		lists: nil;
+		folders: nil
+]
+
 { #category : #'CuObject - accessing' }
 CuSpace >> url [
 

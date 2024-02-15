@@ -47,7 +47,7 @@ CuWorkspace >> spacesGtViewFor: aView [
 		title: 'Spaces';
 		items: [ self spaces ];
 		itemText: #displayString;
-		yourself
+		cuActionUpdateButtonReloading: self
 ]
 
 { #category : #accessing }
