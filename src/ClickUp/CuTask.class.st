@@ -145,6 +145,7 @@ CuTask >> subtasks [
 					fromId: (dict at: 'id')
 					withParent: self
 					inApplication: self application ] ]
+		ifAbsent: [ #() ]
 ]
 
 { #category : #accessing }
