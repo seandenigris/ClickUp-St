@@ -100,7 +100,7 @@ CuTask >> modificationTimestamp [
 
 	^ self 
 		rawDataAt: 'date_updated'
-		reader: [ :str | DateAndTime fromUnixTime: str asInteger / 1000.0 ]
+		reader: [ :str | (DateAndTime fromUnixTime: str asInteger / 1000.0) translateToUTC ]
 ]
 
 { #category : #accessing }
