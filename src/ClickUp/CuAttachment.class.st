@@ -22,7 +22,7 @@ CuAttachment >> contentsGtViewFor: aView [
 CuAttachment >> download [
 
 	| tmpfile |
-	tmpfile := Tempfile withSuffix: '.', self extension.
+	tmpfile := Tempfile named: self filename.
 	self application 
 		clientDownload: self url
 		to: tmpfile reference.
@@ -32,6 +32,11 @@ CuAttachment >> download [
 { #category : #'as yet unclassified' }
 CuAttachment >> extension [
 	^ self rawDataAt: 'extension'
+]
+
+{ #category : #accessing }
+CuAttachment >> filename [
+	^ self url file
 ]
 
 { #category : #accessing }
@@ -86,5 +91,7 @@ CuAttachment >> title [
 
 { #category : #accessing }
 CuAttachment >> url [
-	^ self rawDataAt: 'url'
+	^ self 
+		rawDataAt: 'url'
+		reader: #asUrl
 ]
