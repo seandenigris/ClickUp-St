@@ -132,6 +132,16 @@ CuTask >> reload [
 ]
 
 { #category : #accessing }
+CuTask >> reloadDescription [
+	<magritteActionDescription>
+	^ MAActionDescription new
+		action: #reload;
+		gtIcon: BrGlamorousVectorIcons refresh;
+		isLabelVisible: false;
+		yourself
+]
+
+{ #category : #accessing }
 CuTask >> subtasks [
 
 	subtasks ifNotNil: [ ^ subtasks ].
