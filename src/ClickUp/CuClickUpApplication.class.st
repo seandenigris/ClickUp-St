@@ -216,6 +216,12 @@ CuClickUpApplication >> spaceWithId: aString [
 ]
 
 { #category : #accessing }
+CuClickUpApplication >> taskWithId: aString [
+
+	^ self allTasks detect: [ :task | task id = aString ]
+]
+
+{ #category : #accessing }
 CuClickUpApplication >> workspaces [
 
 	^ workspaces ifNil: [ self reload. workspaces ].
