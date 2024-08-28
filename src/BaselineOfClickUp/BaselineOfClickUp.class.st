@@ -9,12 +9,12 @@ BaselineOfClickUp >> baseline: spec [
 	<baseline>
 		^ spec for: #common do: [
 			spec 
-				baseline: 'PharoEnhancements' with: [
+				baseline: #'PharoEnhancements' with: [
 					spec repository: 'github://seandenigris/Pharo-Enhancements' ];
-				baseline: 'TheProjectProject' with: [
+				baseline: #'TheProjectProject' with: [
 					spec repository: 'github://seandenigris/The-Project-Project' ].
 				
 			spec 
-				package: 'ClickUp'
-				with: [ spec requires: #('PharoEnhancements' 'TheProjectProject') ] ]
+				package: #'ClickUp'
+				with: [ spec requires: #(#'PharoEnhancements' #'TheProjectProject') ] ]
 ]
