@@ -71,7 +71,7 @@ CuClickUpApplication >> clientDownload: aUrl to: aFileReference [
 		streaming: false
 ]
 
-{ #category : #accessing }
+{ #category : #requesting }
 CuClickUpApplication >> clientHTTP: aSelector jsonAt: aUrl do: aBlock [
 
 	^ self
@@ -92,7 +92,7 @@ CuClickUpApplication >> clientHTTP: aSelector jsonAt: aUrl do: aBlock [
 					self error: errMsg ] ].
 ]
 
-{ #category : #accessing }
+{ #category : #requesting }
 CuClickUpApplication >> clientHTTP: aSelector url: aUrl contentReader: readerBlock [
 
 	
@@ -106,7 +106,7 @@ CuClickUpApplication >> clientHTTP: aSelector url: aUrl contentReader: readerBlo
 		do: errorBlock"
 ]
 
-{ #category : #accessing }
+{ #category : #requesting }
 CuClickUpApplication >> clientHTTP: aSelector url: aUrl contentReader: readerBlock ifFail: errorBlock [
 
 	
@@ -120,7 +120,7 @@ CuClickUpApplication >> clientHTTP: aSelector url: aUrl contentReader: readerBlo
 		do: errorBlock
 ]
 
-{ #category : #accessing }
+{ #category : #API }
 CuClickUpApplication >> getFolderWithId: aString jsonDo: aBlock [
 
 	"API Reference: https://clickup.com/api/clickupreference/operation/GetFolder/"
@@ -131,7 +131,7 @@ CuClickUpApplication >> getFolderWithId: aString jsonDo: aBlock [
 		do: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : #requesting }
 CuClickUpApplication >> getJsonAt: aUrl do: aBlock [
 
 	^ self
@@ -140,7 +140,7 @@ CuClickUpApplication >> getJsonAt: aUrl do: aBlock [
 		do: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : #API }
 CuClickUpApplication >> getListWithId: aString jsonDo: aBlock [
 
 	"API Reference: https://clickup.com/api/clickupreference/operation/GetList/"
@@ -151,9 +151,10 @@ CuClickUpApplication >> getListWithId: aString jsonDo: aBlock [
 		do: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : #API }
 CuClickUpApplication >> getListsFor: aCuObject [
 
+	"API Reference: https://clickup.com/api/clickupreference/operation/GetLists/"
 	^ self
 		getJsonAt: aCuObject baseApiUrl / aCuObject id / 'list'
 		do: [ :json |
@@ -164,7 +165,7 @@ CuClickUpApplication >> getListsFor: aCuObject [
 					inApplication: self ] ]
 ]
 
-{ #category : #accessing }
+{ #category : #API }
 CuClickUpApplication >> getSpaceWithId: aString jsonDo: aBlock [
 
 	"API Reference: https://clickup.com/api/clickupreference/operation/GetSpace/"
@@ -175,7 +176,7 @@ CuClickUpApplication >> getSpaceWithId: aString jsonDo: aBlock [
 		do: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : #API }
 CuClickUpApplication >> getTaskWithId: aString jsonDo: aBlock [
 
 	"Reference: https://clickup.com/api/clickupreference/operation/GetTask/"
@@ -186,7 +187,7 @@ CuClickUpApplication >> getTaskWithId: aString jsonDo: aBlock [
 		do: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : #utility }
 CuClickUpApplication >> reload [
 
 	self 
@@ -199,14 +200,14 @@ CuClickUpApplication >> reload [
 					inApplication: self ] ]
 ]
 
-{ #category : #accessing }
+{ #category : #utility }
 CuClickUpApplication >> reset [
 
 	self workspaces: nil.
 	self client: nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CuClickUpApplication >> spaceWithId: aString [ 
 	
 	^ self workspaces do: [ :ws |
@@ -233,7 +234,7 @@ CuClickUpApplication >> workspaces: aCollection [
 	workspaces := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : #'GT Views' }
 CuClickUpApplication >> workspacesGtViewFor: aView [
 	<gtView>
 	^ aView list
