@@ -172,6 +172,17 @@ CuClickUpApplication >> getListsFor: aCuObject [
 ]
 
 { #category : #API }
+CuClickUpApplication >> getSharedHierarchyForTeamWithId: aString jsonDo: aBlock [
+
+	"API Reference: https://clickup.com/api/clickupreference/operation/SharedHierarchy/"
+	| url |
+	url := self baseUrl / 'team' / aString / 'shared'.
+	^ self
+		getJsonAt: url
+		do: aBlock
+]
+
+{ #category : #API }
 CuClickUpApplication >> getSpaceWithId: aString jsonDo: aBlock [
 
 	"API Reference: https://clickup.com/api/clickupreference/operation/GetSpace/"

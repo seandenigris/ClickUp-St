@@ -2,7 +2,8 @@ Class {
 	#name : #CuWorkspace,
 	#superclass : #CuObject,
 	#instVars : [
-		'spaces'
+		'spaces',
+		'sharedLists'
 	],
 	#category : #ClickUp
 }
@@ -10,7 +11,35 @@ Class {
 { #category : #'as yet unclassified' }
 CuWorkspace >> allTasks [
 	
-	^ self spaces flatCollect: [ :space | space allTasks ]
+	^ OrderedCollection streamContents: [ :str |
+		self spaces do: [ :space | str nextPutAll: space allTasks ].
+		self sharedLists do: [ :list | str nextPutAll: list allTasks ] ].
+]
+
+{ #category : #'as yet unclassified' }
+CuWorkspace >> sharedHierarchy [
+
+	^ self application
+		getSharedHierarchyForTeamWithId: self id 
+		jsonDo: [ :json | json ]
+]
+
+{ #category : #'as yet unclassified' }
+CuWorkspace >> sharedLists [
+	"This part of the model is not fleshed out yet, so the API may change. Possibly there may be a virtual 'shared with me' space for uniformity, but as we only need to implement shared lists (not tasks or folders), we will defer thinking that through"
+
+	sharedLists ifNotNil: [ ^ sharedLists ].
+	
+	^ sharedLists := self application
+		getSharedHierarchyForTeamWithId: self id 
+		jsonDo: [ :json | 
+			| listArray |
+			listArray := (json at: 'shared') at: 'lists'.
+			listArray collect: [ :dict |
+				CuList
+					fromDictionary: dict
+					withParent: self 
+					inApplication: self application ] ]
 ]
 
 { #category : #accessing }
