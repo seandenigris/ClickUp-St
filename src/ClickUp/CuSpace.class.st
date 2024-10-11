@@ -26,7 +26,7 @@ CuSpace >> allTasks [
 { #category : #accessing }
 CuSpace >> baseApiUrl [
 
-	^ 'https://api.clickup.com/api/v2/space' asUrl
+	^ self application baseUrl / 'space'
 ]
 
 { #category : #accessing }

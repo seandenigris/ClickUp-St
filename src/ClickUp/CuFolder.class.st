@@ -16,7 +16,7 @@ CuFolder >> allTasks [
 { #category : #accessing }
 CuFolder >> baseApiUrl [
 	
-	^ 'https://api.clickup.com/api/v2/folder' asUrl
+	^ self application baseUrl / 'folder'
 ]
 
 { #category : #accessing }

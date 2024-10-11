@@ -51,6 +51,12 @@ CuClickUpApplication >> apiToken: anObject [
 	apiToken := anObject
 ]
 
+{ #category : #'as yet unclassified' }
+CuClickUpApplication >> baseUrl [
+
+	^ 'https://api.clickup.com/api/v2' asUrl
+]
+
 { #category : #accessing }
 CuClickUpApplication >> client [
 	^ client ifNil: [ client := ZnClient new ]
@@ -125,7 +131,7 @@ CuClickUpApplication >> getFolderWithId: aString jsonDo: aBlock [
 
 	"API Reference: https://clickup.com/api/clickupreference/operation/GetFolder/"
 	| url |
-	url := 'https://api.clickup.com/api/v2/folder' asUrl / aString.
+	url := self baseUrl / 'folder' / aString.
 	^ self
 		getJsonAt: url
 		do: aBlock
@@ -145,7 +151,7 @@ CuClickUpApplication >> getListWithId: aString jsonDo: aBlock [
 
 	"API Reference: https://clickup.com/api/clickupreference/operation/GetList/"
 	| url |
-	url := 'https://api.clickup.com/api/v2/list' asUrl / aString.
+	url := self baseUrl / 'list' / aString.
 	^ self
 		getJsonAt: url
 		do: aBlock
@@ -170,7 +176,7 @@ CuClickUpApplication >> getSpaceWithId: aString jsonDo: aBlock [
 
 	"API Reference: https://clickup.com/api/clickupreference/operation/GetSpace/"
 	| url |
-	url := 'https://api.clickup.com/api/v2/space/' asUrl / aString.
+	url := self baseUrl / 'space' / aString.
 	^ self
 		getJsonAt: url
 		do: aBlock
@@ -181,7 +187,7 @@ CuClickUpApplication >> getTaskWithId: aString jsonDo: aBlock [
 
 	"Reference: https://clickup.com/api/clickupreference/operation/GetTask/"
 	| url |
-	url := 'https://api.clickup.com/api/v2/task' asUrl / aString ? ('include_subtasks' -> true).
+	url := self baseUrl / 'task' / aString ? ('include_subtasks' -> true).
 	^ self
 		getJsonAt: url
 		do: aBlock
