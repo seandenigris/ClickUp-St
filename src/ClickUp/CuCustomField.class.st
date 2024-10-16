@@ -39,6 +39,16 @@ CuCustomField >> fieldValue [
 				ifTrue: [ (self dropdownOptionWithID: rawValue) at: 'name' ] ]
 ]
 
+{ #category : #'as yet unclassified' }
+CuCustomField >> matchesSearchQuery: aString [
+
+	self fieldValue ifNil: [ ^ false ].
+	
+	(self fieldValue asString includesSubstring: aString caseSensitive: false) ifTrue: [ ^ true ].
+	
+	^ false
+]
+
 { #category : #accessing }
 CuCustomField >> name [
 

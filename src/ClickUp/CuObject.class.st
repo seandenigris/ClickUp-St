@@ -78,12 +78,14 @@ CuObject >> rawDataGtViewFor: aView context: aContext [
 { #category : #accessing }
 CuObject >> tasksGtSearchFor: aSearch [
 	<gtSearch>
-	^ aSearch list
+	^ aSearch explicit
 		title: 'Tasks (all)';
 		priority: 2;
-		items: [ self allTasks ];
-		itemName: #displayString;
-		matchSubstrings
+		search: [ :context |
+			self allTasks select: [ :task |
+				task matchesSearchQuery: context searchQuery trimBoth ]
+		"matchSubstrings" ];
+		itemName: #displayString
 ]
 
 { #category : #accessing }

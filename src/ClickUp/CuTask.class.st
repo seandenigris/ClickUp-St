@@ -95,6 +95,24 @@ CuTask >> customFieldsGtViewFor: aView [
 		cuActionUpdateButtonReloading: self
 ]
 
+{ #category : #'as yet unclassified' }
+CuTask >> description [
+
+	^ self rawDataAt: #description
+]
+
+{ #category : #'as yet unclassified' }
+CuTask >> matchesSearchQuery: aString [
+
+	(self name includesSubstring: aString caseSensitive: false) ifTrue: [ ^ true ].
+	
+	(self description includesSubstring: aString caseSensitive: false) ifTrue: [ ^ true ].
+	
+	self customFields anySatisfy: [ :field | field matchesSearchQuery: aString ].
+	
+	^ false
+]
+
 { #category : #accessing }
 CuTask >> modificationTimestamp [
 
