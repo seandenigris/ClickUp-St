@@ -42,6 +42,18 @@ CuWorkspace >> sharedLists [
 					inApplication: self application ] ]
 ]
 
+{ #category : #'as yet unclassified' }
+CuWorkspace >> sharedListsGtViewFor: aView [
+	<gtView>
+	
+	^ aView list
+		title: 'Shared Lists';
+		priority: 25;
+		items: [ self sharedLists ];
+		itemText: #displayString;
+		cuActionUpdateButtonReloading: self
+]
+
 { #category : #accessing }
 CuWorkspace >> spaces [
 
