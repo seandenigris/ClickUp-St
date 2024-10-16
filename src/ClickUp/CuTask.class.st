@@ -14,6 +14,14 @@ CuTask class >> urlForId: aString [
 	^ 'https://app.clickup.com/t' asUrl / aString
 ]
 
+{ #category : #'as yet unclassified' }
+CuTask >> asPpProject [
+
+	^ (PpProject titled: self name)
+		clickUpTaskId: self id;
+		yourself
+]
+
 { #category : #accessing }
 CuTask >> at: keyString [
 
