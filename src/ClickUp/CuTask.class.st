@@ -110,6 +110,14 @@ CuTask >> description [
 ]
 
 { #category : #'as yet unclassified' }
+CuTask >> ensurePpProject [
+
+	^ self ppProjectExists
+		ifTrue: [ self ppProject ]
+		ifFalse: [ self asPpProject import ]
+]
+
+{ #category : #'as yet unclassified' }
 CuTask >> matchesSearchQuery: aString [
 
 	(self name includesSubstring: aString caseSensitive: false) ifTrue: [ ^ true ].
@@ -127,6 +135,38 @@ CuTask >> modificationTimestamp [
 	^ self 
 		rawDataAt: 'date_updated'
 		reader: [ :str | (DateAndTime fromUnixTime: str asInteger / 1000.0) translateToUTC ]
+]
+
+{ #category : #'as yet unclassified' }
+CuTask >> ppProject [
+
+	^ self ppProjectList 
+		detect: [ :proj | proj clickUpTaskId = self id ] 
+		ifNone: [ nil ]
+]
+
+{ #category : #'as yet unclassified' }
+CuTask >> ppProjectExists [
+
+	^ self ppProject isNotNil
+]
+
+{ #category : #'as yet unclassified' }
+CuTask >> ppProjectGtActionFor: anAction [
+	<gtAction>
+
+	self ppProjectExists ifFalse: [ ^ anAction noAction ].
+	
+	^ anAction button
+		icon: BrGlamorousVectorIcons branching;
+		action: [ :button | button phlow spawnObject: 
+			self ppProject ]
+]
+
+{ #category : #'as yet unclassified' }
+CuTask >> ppProjectList [
+
+	^ PpProjectList uniqueInstance
 ]
 
 { #category : #accessing }

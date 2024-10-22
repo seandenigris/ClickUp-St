@@ -9,6 +9,18 @@ PpValue >> clickUpTask [
 ]
 
 { #category : #'*ClickUp' }
+PpValue >> clickUpTaskGtActionFor: anAction [
+	<gtAction>
+
+	self clickUpTask ifNil: [ ^ anAction noAction ].
+	
+	^ anAction button
+		icon: BrGlamorousVectorIcons branching;
+		action: [ :button | button phlow spawnObject: 
+			self clickUpTask ]
+]
+
+{ #category : #'*ClickUp' }
 PpValue >> clickUpTaskId [
 	^ self maLazyPropertyUsing: self clickUpTaskIdDescription
 ]
