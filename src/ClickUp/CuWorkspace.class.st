@@ -48,7 +48,7 @@ CuWorkspace >> sharedListsGtViewFor: aView [
 	
 	^ aView list
 		title: 'Shared Lists';
-		priority: 25;
+		priority: 50;
 		items: [ self sharedLists ];
 		itemText: #displayString;
 		cuActionUpdateButtonReloading: self
@@ -86,6 +86,7 @@ CuWorkspace >> spacesGtViewFor: aView [
 	
 	^ aView list
 		title: 'Spaces';
+		priority: 25;
 		items: [ self spaces ];
 		itemText: #displayString;
 		cuActionUpdateButtonReloading: self
