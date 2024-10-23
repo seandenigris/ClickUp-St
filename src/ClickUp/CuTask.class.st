@@ -110,14 +110,6 @@ CuTask >> description [
 ]
 
 { #category : #'as yet unclassified' }
-CuTask >> ensurePpProject [
-
-	^ self ppProjectExists
-		ifTrue: [ self ppProject ]
-		ifFalse: [ self asPpProject import ]
-]
-
-{ #category : #'as yet unclassified' }
 CuTask >> matchesSearchQuery: aString [
 
 	(self name includesSubstring: aString caseSensitive: false) ifTrue: [ ^ true ].
@@ -143,6 +135,14 @@ CuTask >> ppProject [
 	^ self ppProjectList 
 		detect: [ :proj | proj clickUpTaskId = self id ] 
 		ifNone: [ nil ]
+]
+
+{ #category : #'as yet unclassified' }
+CuTask >> ppProjectEnsure [
+
+	^ self ppProjectExists
+		ifTrue: [ self ppProject ]
+		ifFalse: [ self asPpProject import ]
 ]
 
 { #category : #'as yet unclassified' }
