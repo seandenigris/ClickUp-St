@@ -17,6 +17,14 @@ CuWorkspace >> allTasks [
 ]
 
 { #category : #'as yet unclassified' }
+CuWorkspace >> reload [
+
+	sharedLists := nil.
+	spaces := nil.
+	self sharedLists; spaces.
+]
+
+{ #category : #'as yet unclassified' }
 CuWorkspace >> sharedHierarchy [
 
 	^ self application
