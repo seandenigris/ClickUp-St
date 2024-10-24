@@ -155,12 +155,17 @@ CuTask >> ppProjectExists [
 CuTask >> ppProjectGtActionFor: anAction [
 	<gtAction>
 
-	self ppProjectExists ifFalse: [ ^ anAction noAction ].
+	| iconStencil |
+	iconStencil := [
+		| elpIcon |
+		elpIcon := BrGlamorousVectorIcons branching create.
+		self ppProjectExists ifFalse: [ elpIcon background: Color veryLightGray ].
+		elpIcon ] asStencil.
 	
 	^ anAction button
-		icon: BrGlamorousVectorIcons branching;
+		icon: iconStencil;
 		action: [ :button | button phlow spawnObject: 
-			self ppProject ]
+			self ppProjectEnsure ]
 ]
 
 { #category : #'as yet unclassified' }
