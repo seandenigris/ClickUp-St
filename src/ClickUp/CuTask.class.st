@@ -109,6 +109,16 @@ CuTask >> description [
 	^ self rawDataAt: #description
 ]
 
+{ #category : #accessing }
+CuTask >> descriptionGtViewFor: aView [
+	<gtView>
+	^ aView textEditor
+		title: 'Description';
+		priority: 25;
+		text: [ self description ];
+		cuActionUpdateButtonReloading: self
+]
+
 { #category : #'as yet unclassified' }
 CuTask >> matchesSearchQuery: aString [
 
