@@ -56,6 +56,16 @@ CuTask >> attachments: anObject [
 	attachments := anObject
 ]
 
+{ #category : #'as yet unclassified' }
+CuTask >> attachmentsAdd: anRlResource [
+
+	self application
+		attachment: anRlResource 
+		to: self.
+		
+	^ anRlResource
+]
+
 { #category : #accessing }
 CuTask >> attachmnentsGtViewFor: aView [
 	<gtView>

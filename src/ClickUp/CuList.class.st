@@ -14,6 +14,14 @@ CuList >> allTasks [
 	^ self tasks
 ]
 
+{ #category : #adding }
+CuList >> createTaskFromPpProject: aPpValue [
+
+	^ self application
+		createTaskInList: self 
+		fromPpProject: aPpValue
+]
+
 { #category : #accessing }
 CuList >> getSpace [
 

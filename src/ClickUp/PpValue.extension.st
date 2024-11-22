@@ -1,11 +1,37 @@
 Extension { #name : #PpValue }
 
 { #category : #'*ClickUp' }
+PpValue >> asClickUpTask [
+
+	^ CuClickUpApplication uniqueInstance
+		createTaskInList: self clickUpDefaultList
+		fromPpProject: self
+]
+
+{ #category : #'*ClickUp' }
 PpValue >> clickUpTask [
 
 	self clickUpTaskId ifNil: [ ^ nil ].
 
 	^ CuClickUpApplication uniqueInstance taskWithId: self clickUpTaskId
+]
+
+{ #category : #'*ClickUp' }
+PpValue >> clickUpTaskEnsure [
+
+	^ self clickUpTaskExists
+		ifTrue: [ self clickUpTask ]
+		ifFalse: [ 
+			| newTask |
+			newTask := self asClickUpTask.
+			self clickUpTaskId: newTask id.
+			newTask ]
+]
+
+{ #category : #'*ClickUp' }
+PpValue >> clickUpTaskExists [
+
+	^ self clickUpTaskId isNotNil
 ]
 
 { #category : #'*ClickUp' }

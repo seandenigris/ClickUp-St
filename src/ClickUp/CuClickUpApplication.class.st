@@ -51,6 +51,19 @@ CuClickUpApplication >> apiToken: anObject [
 	apiToken := anObject
 ]
 
+{ #category : #API }
+CuClickUpApplication >> attachment: anRlResource to: aCuTask [
+
+	"API Reference: https://clickup.com/api/clickupreference/operation/CreateTaskAttachment/"
+	| aUrl |
+	aUrl := self baseUrl / 'task' / aCuTask id / 'attachment'.
+	
+	^ self
+		postFile: anRlResource 
+		to: aUrl
+		do: [ :jsonResponse | jsonResponse ]
+]
+
 { #category : #'as yet unclassified' }
 CuClickUpApplication >> baseUrl [
 
@@ -124,6 +137,38 @@ CuClickUpApplication >> clientHTTP: aSelector url: aUrl contentReader: readerBlo
 	]
 		on: ZnHttpUnsuccessful
 		do: errorBlock
+]
+
+{ #category : #API }
+CuClickUpApplication >> createTaskInList: aCuList fromPpProject: aPpValue [
+
+	"API Reference: https://clickup.com/api/clickupreference/operation/CreateTask/"
+	| aUrl jsonDict jsonInput |
+	aUrl := self baseUrl / 'list' / aCuList id / 'task'.
+	jsonDict := Dictionary new
+		at: 'name' put: aPpValue title;
+		yourself.
+		
+	aPpValue hasLepiterPage ifTrue: [
+		jsonDict 
+			at: 'markdown_description' 
+			put: aPpValue ensureLepiterPage asMarkdownPage withUnixLineEndings ].
+			
+	jsonInput := STONJSON toStringPretty: jsonDict.
+	
+	^ self
+		postJson: jsonInput 
+		to: aUrl
+		do: [ :jsonResponse |
+			| result |
+			result := CuTask 
+				fromDictionary: jsonResponse 
+				withParent: aCuList
+				inApplication: self.
+				
+			aPpValue supportMaterials 
+				reject: [ :e | e isKindOf: RlEmail ]
+				thenDo: [ :e | result attachmentsAdd: e ] ]
 ]
 
 { #category : #API }
@@ -202,6 +247,37 @@ CuClickUpApplication >> getTaskWithId: aString jsonDo: aBlock [
 	^ self
 		getJsonAt: url
 		do: aBlock
+]
+
+{ #category : #requesting }
+CuClickUpApplication >> postFile: anRlResourceable to: aUrl do: aBlock [
+
+	[ 
+		self client
+			addPart: (ZnMimePart fieldName: 'attachment' fileNamed: anRlResourceable asRlResource file fullName).
+			
+		^ self
+			clientHTTP: #post
+			jsonAt: aUrl
+			do: aBlock
+	]
+			ensure: [ self client resetEntity ]
+]
+
+{ #category : #requesting }
+CuClickUpApplication >> postJson: aString to: aUrl do: aBlock [
+
+	[ 
+		self client
+			contents: aString;
+			contentType: ZnMimeType applicationJson.
+			
+		^ self
+			clientHTTP: #post
+			jsonAt: aUrl
+			do: aBlock
+	]
+			ensure: [ self client resetEntity ]
 ]
 
 { #category : #utility }
