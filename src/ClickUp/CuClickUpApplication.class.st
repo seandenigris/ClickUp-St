@@ -172,6 +172,17 @@ CuClickUpApplication >> createTaskInList: aCuList fromPpProject: aPpValue [
 ]
 
 { #category : #API }
+CuClickUpApplication >> getCommentsForTaskWithId: aString jsonDo: aBlock [
+
+	"Reference: https://developer.clickup.com/reference/gettaskcomments"
+	| url |
+	url := self baseUrl / 'task' / aString / 'comment'.
+	^ self
+		getJsonAt: url
+		do: aBlock
+]
+
+{ #category : #API }
 CuClickUpApplication >> getFolderWithId: aString jsonDo: aBlock [
 
 	"API Reference: https://clickup.com/api/clickupreference/operation/GetFolder/"
