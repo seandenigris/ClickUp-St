@@ -52,7 +52,7 @@ CuClickUpApplication >> apiToken: anObject [
 ]
 
 { #category : #API }
-CuClickUpApplication >> attachment: anRlResource to: aCuTask [
+CuClickUpApplication >> attach: anRlResource to: aCuTask [
 
 	"API Reference: https://clickup.com/api/clickupreference/operation/CreateTaskAttachment/"
 	| aUrl |

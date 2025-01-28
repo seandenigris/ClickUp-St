@@ -60,7 +60,7 @@ CuTask >> attachments: anObject [
 CuTask >> attachmentsAdd: anRlResource [
 
 	self application
-		attachment: anRlResource 
+		attach: anRlResource 
 		to: self.
 		
 	^ anRlResource
