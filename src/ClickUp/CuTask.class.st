@@ -86,6 +86,24 @@ CuTask >> comments [
 ]
 
 { #category : #accessing }
+CuTask >> comments: anObject [
+	comments := anObject
+]
+
+{ #category : #private }
+CuTask >> commentsGet [
+
+	^ self application
+		getCommentsForTaskWithId: self id 
+		jsonDo: [ :json | 
+			(json at: 'comments') collect: [ :dict | 
+				CuComment
+					fromDictionary: dict
+					withParent: self
+					inApplication: self application ]  ]
+]
+
+{ #category : #accessing }
 CuTask >> commentsGtViewFor: aView [
 	<gtView>
 	^ (aView maColumnedListOf: CuComment)
@@ -236,7 +254,8 @@ CuTask >> reload [
 		
 	self
 		attachments: nil;
-		subtasks: nil
+		subtasks: nil;
+		comments: nil
 ]
 
 { #category : #accessing }
