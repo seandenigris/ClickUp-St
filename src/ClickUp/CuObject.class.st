@@ -89,6 +89,11 @@ CuObject >> tasksGtSearchFor: aSearch [
 ]
 
 { #category : #accessing }
+CuObject >> timestampFromString: aString [
+	^ (DateAndTime fromUnixTime: aString asInteger / 1000.0) translateToUTC
+]
+
+{ #category : #accessing }
 CuObject >> url [
 
 	^ self subclassResponsibility

@@ -3,7 +3,8 @@ Class {
 	#superclass : #CuObject,
 	#instVars : [
 		'attachments',
-		'subtasks'
+		'subtasks',
+		'comments'
 	],
 	#category : #ClickUp
 }
@@ -78,12 +79,28 @@ CuTask >> attachmnentsGtViewFor: aView [
 		cuActionUpdateButtonReloading: self
 ]
 
+{ #category : #'as yet unclassified' }
+CuTask >> comments [
+
+	^ comments ifNil: [ comments := self commentsGet ]
+]
+
+{ #category : #accessing }
+CuTask >> commentsGtViewFor: aView [
+	<gtView>
+	^ (aView maColumnedListOf: CuComment)
+		title: 'Comments';
+		priority: 50;
+		items: [ self comments ];
+		inspectButtonFor: [ self comments ];
+		cuActionUpdateButtonReloading: self
+]
+
 { #category : #accessing }
 CuTask >> creationTimestamp [
-
-	^ self 
+	^ self
 		rawDataAt: 'date_created'
-		reader: [ :str | DateAndTime fromUnixTime: str asInteger / 1000.0 ]
+		reader: [ :str | self timestampFromString: str ]
 ]
 
 { #category : #accessing }
@@ -146,7 +163,7 @@ CuTask >> modificationTimestamp [
 
 	^ self 
 		rawDataAt: 'date_updated'
-		reader: [ :str | (DateAndTime fromUnixTime: str asInteger / 1000.0) translateToUTC ]
+		reader: [ :str | self timestampFromString: str ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -272,6 +289,11 @@ CuTask >> timeSpent [
 	^ self
 		rawDataAt: 'time_spent'
 		reader: [ :str | str asInteger milliSeconds ]
+]
+
+{ #category : #accessing }
+CuTask >> timestampFromString: str [
+	^ (DateAndTime fromUnixTime: str asInteger / 1000.0) translateToUTC
 ]
 
 { #category : #accessing }
