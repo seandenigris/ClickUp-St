@@ -331,7 +331,16 @@ CuClickUpApplication >> spaceWithId: aString [
 { #category : #accessing }
 CuClickUpApplication >> taskWithId: aString [
 
-	^ self allTasks detect: [ :task | task id = aString ]
+	"Check cache"
+	self allTasks detect: [ :task | task id = aString ] ifFound: [ :task | ^ task ].	
+	
+	"Attempt to load"	
+	^ self
+		getTaskWithId: aString
+		jsonDo: [ :jsonDictionary | 
+			| list |
+			list := CuTask listFromJSON: jsonDictionary inApplication: self.
+			list taskFromJson: jsonDictionary. ]
 ]
 
 { #category : #accessing }

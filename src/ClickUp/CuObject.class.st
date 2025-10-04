@@ -21,6 +21,12 @@ CuObject class >> fromDictionary: aDictionary withParent: aCuObject inApplicatio
 ]
 
 { #category : #accessing }
+CuObject class >> idFromJSON: aDictionary [
+
+	^ aDictionary at: 'id'
+]
+
+{ #category : #accessing }
 CuObject >> application [
 	^ application
 ]
@@ -40,7 +46,7 @@ CuObject >> displayStringOn: aStream [
 { #category : #accessing }
 CuObject >> id [
 
-	^ self rawDataAt: 'id'
+	^ self class idFromJSON: self rawData
 ]
 
 { #category : #accessing }

@@ -53,6 +53,21 @@ CuList >> space [
 	^ self parent
 ]
 
+{ #category : #'as yet unclassified' }
+CuList >> taskFromJson: aDictionary [
+	| taskId |
+	taskId := CuTask idFromJSON: aDictionary.
+
+	^ self tasks
+		detect: [ :existingTask | existingTask id = taskId ]
+		ifNone: [ | newTask |
+			newTask := CuTask
+					fromDictionary: aDictionary
+					withParent: self
+					inApplication: self application.
+			self tasks add: newTask ]
+]
+
 { #category : #accessing }
 CuList >> tasks [
 
@@ -62,11 +77,13 @@ CuList >> tasks [
 	^ self application
 		getJsonAt: 'https://api.clickup.com/api/v2/list' asUrl / self id / 'task' ? ('subtasks' -> true)
 		do: [ :json |
-			tasks := (json at: 'tasks') collect: [ :dict |
-				CuTask
-					fromDictionary: dict 
-					withParent: self
-					inApplication: self application ] ]
+			tasks := (json at: 'tasks') 
+				collect: [ :dict |
+					CuTask
+						fromDictionary: dict 
+						withParent: self
+						inApplication: self application ]
+				as: OrderedCollection ]
 ]
 
 { #category : #accessing }

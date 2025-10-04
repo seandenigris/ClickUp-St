@@ -10,6 +10,17 @@ Class {
 }
 
 { #category : #accessing }
+CuTask class >> listFromJSON: aDictionary inApplication: aCuApplication [
+
+	^ aDictionary
+		at: 'list'
+		ifPresent: [ :listDict | 
+			| listID |
+			listID := listDict at: #id.
+			aCuApplication listWithId: listID ]
+]
+
+{ #category : #accessing }
 CuTask class >> urlForId: aString [
 
 	^ 'https://app.clickup.com/t' asUrl / aString
