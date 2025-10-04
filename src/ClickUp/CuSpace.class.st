@@ -72,6 +72,14 @@ CuSpace >> foldersGtViewFor: aView [
 		cuActionUpdateButtonReloading: self
 ]
 
+{ #category : #'as yet unclassified' }
+CuSpace >> listWithId: aString [ 
+	
+	^ self lists
+			detect: [ :s | s id = aString ]
+			ifNone: [ :s | nil ]
+]
+
 { #category : #accessing }
 CuSpace >> lists [
 

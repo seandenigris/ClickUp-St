@@ -164,6 +164,16 @@ CuTask >> descriptionGtViewFor: aView [
 		cuActionUpdateButtonReloading: self
 ]
 
+{ #category : #accessing }
+CuTask >> list [
+	^ self
+		rawDataAt: 'list'
+		reader: [ :listDict | 
+			| listID |
+			listID := listDict at: #id.
+			self application listWithId: listID ]
+]
+
 { #category : #'as yet unclassified' }
 CuTask >> matchesSearchQuery: aString [
 

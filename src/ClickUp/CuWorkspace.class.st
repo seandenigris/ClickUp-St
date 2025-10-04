@@ -17,6 +17,14 @@ CuWorkspace >> allTasks [
 ]
 
 { #category : #'as yet unclassified' }
+CuWorkspace >> listWithId: aString [ 
+	
+	^ self spaces do: [ :ws |
+		(ws listWithId: aString)
+			ifNotNil: [ :aList | ^ aList ] ]
+]
+
+{ #category : #'as yet unclassified' }
 CuWorkspace >> reload [
 
 	sharedLists := nil.

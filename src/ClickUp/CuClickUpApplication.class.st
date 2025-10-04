@@ -260,6 +260,14 @@ CuClickUpApplication >> getTaskWithId: aString jsonDo: aBlock [
 		do: aBlock
 ]
 
+{ #category : #accessing }
+CuClickUpApplication >> listWithId: aString [ 
+	
+	^ self workspaces do: [ :ws |
+		(ws listWithId: aString)
+			ifNotNil: [ :aList | ^ aList ] ]
+]
+
 { #category : #requesting }
 CuClickUpApplication >> postFile: anRlResourceable to: aUrl do: aBlock [
 
